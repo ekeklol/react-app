@@ -1,27 +1,21 @@
 "use strict";
 
 // BOOKS REDUCERS
-export function booksReducers(state={books: [
-  {
-    _id: 1,
-    title: 'book title',
-    description: 'description of this book',
-    price: 11.11
-  },
-  {
-    _id: 2,
-    title: 'book title two',
-    description: 'description of this book two',
-    price: 22.22
-  }
-]}, action) {
+export function booksReducers(state={
+  books: []
+}, action) {
   switch (action.type) {
     case "GET_BOOKS":
-      return {...state, books:[...state.books]}
+      return {...state, books:[...action.payload]}
     case "POST_BOOK":
       // let books = state.books.concat(action.payload);
-      return {books: [...state.books, ...action.payload]};
+      return {...state, books: [...state.books, ...action.payload],
+      msg: 'Saved! Click to continue', style:'success', validation: 'success'};
       break;
+    case "POST_BOOK_REJECTED":
+      return {...state, msg: 'Please try again', style: 'danger', validation: 'error'}
+    case "RESET_BUTTON":
+      return {...state, msg: null, style: 'primary', validation: null}
     case "DELETE_BOOK":
       const currentBookToDelete = [...state.books];
       const indexToDelete = currentBookToDelete.findIndex(
